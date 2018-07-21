@@ -15,10 +15,10 @@ active = {
         return (
             <div style={this.header}>
                 <NavLink exact to="/" activeStyle={this.active}>
-                Homeee
+                Lists
                     </NavLink>
                     <NavLink to="/map" activeStyle={this.active}>
-                Posts
+                Maps
                 </NavLink>
             </div>
         );

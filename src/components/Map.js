@@ -1,84 +1,62 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import ReactMapGL, { Marker, Popup } from 'react-map-gl';
+import { Link } from "react-router-dom";
 
 
 class Map extends Component {
-    render() {
-        return (
-            <div>
-                <h1>Map is there</h1>
-            </div>
-        );
+
+  constructor() {
+    super();
+    this.state = {
+      bars: [],
+      viewport: {
+        width: 1000,
+        height: 600,
+        latitude: 44.8404400,
+        longitude: -0.5805000,
+        zoom: 15,
+      }
     }
+  }
+
+  componentDidMount() {
+    var url = new URL("https://api.foursquare.com/v2/venues/search"),
+      params = {
+        client_id: process.env.REACT_APP_CLIENT_ID,
+        client_secret: process.env.REACT_APP_CLIENT_SECRET,
+        ll: '44.8404400,-0.5805000',
+        categoryId: '4bf58dd8d48988d116941735',
+        v: '20180323'
+      }
+
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+
+    fetch(url).then((results) => {
+      return results.json();
+    }).then((data) => {
+      let bars = data.response.venues.map((bar) => {
+        return (
+          <Link to={{ pathname: `details/${bar.id}` }}>
+            <Marker latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng} >
+              <div>{bar.name}</div>
+            </Marker>
+          </Link>
+        )
+      });
+      this.setState({ bars })
+    })
+  }
+
+  render() {
+    return (
+      <ReactMapGL mapboxApiAccessToken={process.env.REACT_APP_PUBLIC_MAP_TOKEN}
+        {...this.state.viewport}
+        onViewportChange={(viewport) => this.setState({ viewport })}
+      >
+        {this.state.bars}
+      </ReactMapGL>
+    );
+  }
 }
+
 export default Map;
-
-
-
-
-// import React, { Component } from 'react';
-// import { Route, Link } from 'react-router-dom';
-// import './App.css';
-
-
-// const Home = () => (
-//   <div>
-//     <h2>Home</h2>
-//   </div>
-// );
-
-// const About = () => (
-//   <div>
-//     <h2>About</h2>
-//   </div>
-// );
-
-// const Topics = ({ match }) => (
-//   <div>
-//     <h2>Topics</h2>
-//     <ul>
-//       <li>
-//         <Link to={`${match.url}/rendering`}>Rendering with React</Link>
-//       </li>
-//       <li>
-//         <Link to={`${match.url}/components`}>Components</Link>
-//       </li>
-//       <li>
-//         <Link to={`${match.url}/props-v-state`}>Props v. State</Link>
-//       </li>
-//     </ul>
-
-//     <Route path={`${match.url}/:topicId`} component={Topic} />
-//     <Route
-//       exact
-//       path={match.url}
-//       render={() => <h3>Please select a topic.</h3>}
-//     />
-//   </div>
-// );
-
-// const Topic = ({ match }) => (
-//   <div>
-//     <h3>{match.params.topicId}</h3>
-//   </div>
-// );
-
-// class App extends Component {
-//   render() {
-//     return (
-//       <div>
-//         <ul>
-//           <li><Link to="/">Home</Link></li>
-//           <li><Link to="/about">Airports</Link></li>
-//           <li><Link to="/topics">Cities</Link></li>
-//         </ul>
-
-//         <Route path="/" component={Home}/>
-//         <Route path="/about" component={About}/>
-//         <Route path="/topics" component={Topics}/>
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;
-
