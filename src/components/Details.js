@@ -9,13 +9,12 @@ class Details extends Component {
     super();
     this.state = {
       name: "",
-      nb: 0
     }
   }
 
   componentDidMount() {
     var url = new URL(`https://api.foursquare.com/v2/venues/${this.props.match.params.id}`),
-    params = {
+      params = {
         client_id: process.env.REACT_APP_CLIENT_ID,
         client_secret: process.env.REACT_APP_CLIENT_SECRET,
         v: '20180323'
@@ -25,9 +24,14 @@ class Details extends Component {
     fetch(url).then((results) => {
       return results.json();
     }).then((data) => {
-      console.log(data);
       this.setState({
-        name: data.response.venue.name
+        name: data.response.venue.name,
+        img: data.response.venue.bestPhoto.prefix + 'height320' + data.response.venue.bestPhoto.suffix,
+        url: data.response.venue.canonicalUrl,
+        tel: data.response.venue.contact.formattedPhone,
+        adress: data.response.venue.location.address,
+        city: data.response.venue.location.city,
+        country: data.response.venue.location.country,
       })
     });
   }
@@ -36,15 +40,25 @@ class Details extends Component {
 
 
   render() {
-    console.log("props=",this.props.match.params.id);
-
     return (
-      <React.Fragment>
-        <div>
-          <h1>Details</h1>
-          <h2>{this.state.name}</h2>
-        </div>
-      </React.Fragment>
+      <div className="col-xs-12 text-center detail">
+        <React.Fragment>
+          <h1>{this.state.name}</h1>
+          <a href={this.state.url} target="_blank">
+            <img className="imgDetail" src={this.state.img} />
+            <div className="hover-home">
+              <p className="link-hover-home">Découvrir <span>{this.state.name}</span></p>
+              <div className="line"></div>
+            </div>
+          </a>
+          <h2>Contact</h2>
+          <ul>
+            <li>{this.state.tel}</li>
+            <li>{this.state.adress} {this.state.city}</li>
+            <li>{this.state.country}</li>
+          </ul>
+        </React.Fragment>
+      </div>
     );
   }
 }

@@ -10,12 +10,13 @@ class Map extends Component {
     this.state = {
       bars: [],
       viewport: {
-        width: 1000,
-        height: 600,
+        width: 900,
+        height: 500,
         latitude: 44.8404400,
         longitude: -0.5805000,
-        zoom: 15,
-      }
+        zoom: 13,
+        margin: 0
+      },
     }
   }
 
@@ -29,6 +30,7 @@ class Map extends Component {
         v: '20180323'
       }
 
+
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 
     fetch(url).then((results) => {
@@ -36,10 +38,12 @@ class Map extends Component {
     }).then((data) => {
       let bars = data.response.venues.map((bar) => {
         return (
-          <Link to={{ pathname: `details/${bar.id}` }}>
-            <Marker latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng} >
-              <div>{bar.name}</div>
+          <Link to={{ pathname: `details/${bar.id}` }} key={bar.id}>
+            <Marker latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng}>
             </Marker>
+            <Popup latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng} anchor="right">
+              <div>{bar.name}</div>
+            </Popup>
           </Link>
         )
       });
