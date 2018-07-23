@@ -41,7 +41,7 @@ class Map extends Component {
           <Link to={{ pathname: `details/${bar.id}` }} key={bar.id}>
             <Marker latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng}>
             </Marker>
-            <Popup latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng} anchor="right">
+            <Popup latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng} anchor="right"> 
               <div>{bar.name}</div>
             </Popup>
           </Link>
