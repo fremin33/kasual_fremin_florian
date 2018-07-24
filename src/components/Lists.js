@@ -13,6 +13,8 @@ class Lists extends Component {
       updateList: []
     }
   }
+
+  // Get all venues data
   componentDidMount() {
     var url = new URL("https://api.foursquare.com/v2/venues/search"),
       params = {
@@ -23,10 +25,12 @@ class Lists extends Component {
         v: '20180323'
       }
 
+    // Update params
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url).then((results) => {
       return results.json();
     }).then((data) => {
+      // Get Data for search input
       let filteredList = data.response.venues.map((bar) => {
         return bar
       });
@@ -47,7 +51,7 @@ class Lists extends Component {
     })
   }
 
-
+  // Update list with search input
   handleSearch(event) {
     var updatedList = this.state.filteredList.filter(function (item) {
       return item.name.toLowerCase().search(

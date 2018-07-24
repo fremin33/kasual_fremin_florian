@@ -12,6 +12,8 @@ class Header extends Component {
         listStyle: "none",
         marginBottom: "15px"
     };
+
+    // Render Header of website
     render() {
         return (
             <div className="col-xs-12">

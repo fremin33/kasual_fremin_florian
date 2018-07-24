@@ -20,6 +20,7 @@ class Map extends Component {
     }
   }
 
+  // Get all venues data
   componentDidMount() {
     var url = new URL("https://api.foursquare.com/v2/venues/search"),
       params = {
@@ -30,9 +31,10 @@ class Map extends Component {
         v: '20180323'
       }
 
-
+    // Update params
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
 
+    // Display map with Popup and Marker
     fetch(url).then((results) => {
       return results.json();
     }).then((data) => {
@@ -41,7 +43,7 @@ class Map extends Component {
           <Link to={{ pathname: `details/${bar.id}` }} key={bar.id}>
             <Marker latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng}>
             </Marker>
-            <Popup latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng} anchor="right"> 
+            <Popup latitude={bar.location.labeledLatLngs[0].lat} longitude={bar.location.labeledLatLngs[0].lng} anchor="right">
               <div>{bar.name}</div>
             </Popup>
           </Link>

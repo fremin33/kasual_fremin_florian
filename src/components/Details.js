@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import 'whatwg-fetch';
 require('dotenv').config()
 
@@ -12,6 +11,7 @@ class Details extends Component {
     }
   }
 
+  // Get data with id of venue
   componentDidMount() {
     var url = new URL(`https://api.foursquare.com/v2/venues/${this.props.match.params.id}`),
       params = {
@@ -20,6 +20,7 @@ class Details extends Component {
         v: '20180323'
       }
 
+  // Update params
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url).then((results) => {
       return results.json();
@@ -35,8 +36,6 @@ class Details extends Component {
       })
     });
   }
-
-
 
 
   render() {
