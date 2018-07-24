@@ -44,7 +44,7 @@ class Details extends Component {
         <React.Fragment>
           <h1>{this.state.name}</h1>
           <a href={this.state.url} target="_blank">
-            <img className="imgDetail" src={this.state.img} />
+            <img className="imgDetail" src={this.state.img} alt={this.state.name} />
             <div className="hover-home">
               <p className="link-hover-home">Découvrir <span>{this.state.name}</span></p>
               <div className="line"></div>
